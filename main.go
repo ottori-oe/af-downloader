@@ -122,11 +122,23 @@ func createPDF(outputFile string, imageDir string) error {
 	if err != nil {
 		return err
 	}
+
+	// Sanitize the output file name
+    outputFile = sanitizeFileName(outputFile)
+	
 	err = pdf.Save(outputFile)
 	if err != nil {
 		return err
 	}
 	return nil
+}
+
+func sanitizeFileName(fileName string) string {
+    // Replace invalid characters in file names
+    fileName = strings.ReplaceAll(fileName, "'", "")
+    fileName = strings.ReplaceAll(fileName, "\\", "")
+
+    return fileName
 }
 
 func (fb *flipbook) downloadImages(downloadFolder string) error {
